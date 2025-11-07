@@ -1,0 +1,51 @@
+• Question 1: What is Redux, and why is it used in React applications? Explain the core 
+concepts of Redux, including actions, reducers, and the store.
+
+Redux is a predictable state management library commonly used in React applications to manage the application's state in a centralized manner. It helps to maintain consistency across the application, making it easier to debug and test.
+Core Concepts of Redux:
+1. Actions: Actions are plain JavaScript objects that represent an intention to change the state. They must have a 'type' property that indicates the type of action being performed. Actions can also carry additional data (payload) needed to update the state.
+Example:
+{
+  type: 'ADD_TODO',
+  payload: {
+    text: 'Learn Redux'
+  }
+}
+2. Reducers: Reducers are pure functions that take the current state and an action as arguments and return a new state. They specify how the application's state changes in response to actions. Reducers must not mutate the state directly; instead, they should return a new state object.
+
+Example:
+function todoReducer(state = [], action) {
+  switch (action.type) {
+    case 'ADD_TODO':
+      return [...state, action.payload];
+    default:
+      return state;
+  }
+}
+3. Store: The store is a centralized object that holds the entire state of the application. It is created using the createStore function from Redux. The store provides methods to dispatch actions, subscribe to state changes, and get the current state.
+Example:  
+import { createStore } from 'redux';
+const store = createStore(todoReducer);
+In summary, Redux is used in React applications to manage state in a predictable way, making it easier to handle complex state interactions and maintain a consistent application state. The core concepts of actions, reducers, and the store work together to facilitate this state management.
+
+
+• Question 2: How does Recoil simplify state management in React compared to Redux? 
+Recoil is a state management library for React that simplifies state management by providing a more intuitive and flexible approach compared to Redux. Here are some ways in which Recoil simplifies state management:
+1. Atom-based State: Recoil uses atoms as the fundamental unit of state. An atom represents a piece of state that can be read and written independently. This allows for more granular state management, as components can subscribe to specific atoms without needing to manage a global state tree.
+Example:
+import { atom } from 'recoil';
+const todoListState = atom({
+  key: 'todoListState',
+  default: [],
+});
+2. Selectors for Derived State: Recoil provides selectors, which are pure functions that derive state based on atoms or other selectors. This allows for easy computation of derived state without the need for complex reducer logic.
+Example:
+
+import { selector } from 'recoil';
+const completedTodoCountState = selector({
+  key: 'completedTodoCountState',
+  get: ({ get }) => {
+    const todoList = get(todoListState);
+    return todoList.filter((todo) => todo.completed).length;
+  },
+});
